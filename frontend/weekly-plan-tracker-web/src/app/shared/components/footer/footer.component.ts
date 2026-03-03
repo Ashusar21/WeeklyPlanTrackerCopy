@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ToastService } from '../../../core/services/toast.service';
 import { TeamMemberService } from '../../../core/services/team-member.service';
 import { BacklogService } from '../../../core/services/backlog.service';
@@ -7,7 +7,7 @@ import { BacklogService } from '../../../core/services/backlog.service';
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })

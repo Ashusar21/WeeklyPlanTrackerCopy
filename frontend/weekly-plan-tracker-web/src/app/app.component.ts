@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { ThemeService } from './core/services/theme.service';
 import { AuthService } from './core/services/auth.service';
 import { Router } from '@angular/router';
@@ -14,11 +14,10 @@ import { ToastComponent } from './shared/components/toast/toast.component';
   standalone: true,
   imports: [
     RouterOutlet,
-    CommonModule,
     NavbarComponent,
     FooterComponent,
-    ToastComponent,
-  ],
+    ToastComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

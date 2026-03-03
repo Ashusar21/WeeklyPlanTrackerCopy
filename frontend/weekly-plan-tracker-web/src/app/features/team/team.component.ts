@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TeamMemberService } from '../../core/services/team-member.service';
@@ -10,7 +10,7 @@ import { TeamMember } from '../../core/models/team-member.model';
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss'],
 })

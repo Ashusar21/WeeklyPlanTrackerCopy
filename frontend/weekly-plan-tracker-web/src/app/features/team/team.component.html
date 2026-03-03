@@ -8,134 +8,150 @@
   </div>
 
   <!-- Add Member Form (Lead only) -->
-  <div *ngIf="isLead" class="card mb-2">
-    <p style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem">
-      Add New Member
-    </p>
-    <div style="display: flex; gap: 0.5rem">
-      <input
-        type="text"
-        [(ngModel)]="newName"
-        placeholder="Member name..."
-        (keyup.enter)="addMember()"
-        style="flex: 1"
-      />
-      <button
-        class="btn btn-primary"
-        (click)="addMember()"
-        [disabled]="!newName.trim() || adding"
-      >
-        {{ adding ? "Adding..." : "+ Add" }}
-      </button>
+  @if (isLead) {
+    <div class="card mb-2">
+      <p style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem">
+        Add New Member
+      </p>
+      <div style="display: flex; gap: 0.5rem">
+        <input
+          type="text"
+          [(ngModel)]="newName"
+          placeholder="Member name..."
+          (keyup.enter)="addMember()"
+          style="flex: 1"
+          />
+        <button
+          class="btn btn-primary"
+          (click)="addMember()"
+          [disabled]="!newName.trim() || adding"
+          >
+          {{ adding ? "Adding..." : "+ Add" }}
+        </button>
+      </div>
     </div>
-  </div>
+  }
 
   <!-- Members Table -->
   <div class="card">
-    <div *ngIf="loading" class="empty-state"><p>Loading...</p></div>
+    @if (loading) {
+      <div class="empty-state"><p>Loading...</p></div>
+    }
 
-    <table *ngIf="!loading">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th *ngIf="isLead">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let member of members">
-          <!-- Name (editable) -->
-          <td>
-            <div
-              *ngIf="editingId !== member.id"
-              style="display: flex; align-items: center; gap: 0.5rem"
-            >
-              <div class="avatar">{{ member.name[0].toUpperCase() }}</div>
-              {{ member.name }}
-              <span
-                *ngIf="isCurrentUser(member)"
-                class="badge badge-lead"
-                style="font-size: 0.65rem"
-                >You</span
-              >
-            </div>
-            <div
-              *ngIf="editingId === member.id"
-              style="display: flex; gap: 0.4rem"
-            >
-              <input
-                type="text"
-                [(ngModel)]="editName"
-                (keyup.enter)="saveEdit(member)"
-                style="flex: 1; padding: 0.3rem 0.5rem"
-              />
-              <button class="btn btn-primary btn-sm" (click)="saveEdit(member)">
-                Save
-              </button>
-              <button class="btn btn-ghost btn-sm" (click)="cancelEdit()">
-                Cancel
-              </button>
-            </div>
-          </td>
-
-          <!-- Role -->
-          <td>
-            <span
-              class="badge"
-              [class.badge-lead]="member.isLead"
-              [class.badge-inactive]="!member.isLead"
-            >
-              {{ member.isLead ? "⭐ Lead" : "Member" }}
-            </span>
-          </td>
-
-          <!-- Status -->
-          <td>
-            <span
-              class="badge"
-              [class.badge-success]="member.isActive"
-              [class.badge-inactive]="!member.isActive"
-            >
-              {{ member.isActive ? "Active" : "Inactive" }}
-            </span>
-          </td>
-
-          <!-- Actions (Lead only) -->
-          <td *ngIf="isLead">
-            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap">
-              <button
-                class="btn btn-ghost btn-sm"
-                (click)="startEdit(member)"
-                *ngIf="editingId !== member.id"
-              >
-                ✏️ Edit
-              </button>
-              <button
-                class="btn btn-ghost btn-sm"
-                (click)="makeLead(member)"
-                *ngIf="!member.isLead && member.isActive"
-              >
-                ⭐ Make Lead
-              </button>
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="deactivate(member)"
-                *ngIf="member.isActive && !isCurrentUser(member)"
-              >
-                Deactivate
-              </button>
-              <button
-                class="btn btn-ghost btn-sm"
-                (click)="reactivate(member)"
-                *ngIf="!member.isActive"
-              >
-                Reactivate
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    @if (!loading) {
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Status</th>
+            @if (isLead) {
+              <th>Actions</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (member of members; track member) {
+            <tr>
+              <!-- Name (editable) -->
+              <td>
+                @if (editingId !== member.id) {
+                  <div
+                    style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                    <div class="avatar">{{ member.name[0].toUpperCase() }}</div>
+                    {{ member.name }}
+                    @if (isCurrentUser(member)) {
+                      <span
+                        class="badge badge-lead"
+                        style="font-size: 0.65rem"
+                        >You</span
+                        >
+                      }
+                    </div>
+                  }
+                  @if (editingId === member.id) {
+                    <div
+                      style="display: flex; gap: 0.4rem"
+                      >
+                      <input
+                        type="text"
+                        [(ngModel)]="editName"
+                        (keyup.enter)="saveEdit(member)"
+                        style="flex: 1; padding: 0.3rem 0.5rem"
+                        />
+                      <button class="btn btn-primary btn-sm" (click)="saveEdit(member)">
+                        Save
+                      </button>
+                      <button class="btn btn-ghost btn-sm" (click)="cancelEdit()">
+                        Cancel
+                      </button>
+                    </div>
+                  }
+                </td>
+                <!-- Role -->
+                <td>
+                  <span
+                    class="badge"
+                    [class.badge-lead]="member.isLead"
+                    [class.badge-inactive]="!member.isLead"
+                    >
+                    {{ member.isLead ? "⭐ Lead" : "Member" }}
+                  </span>
+                </td>
+                <!-- Status -->
+                <td>
+                  <span
+                    class="badge"
+                    [class.badge-success]="member.isActive"
+                    [class.badge-inactive]="!member.isActive"
+                    >
+                    {{ member.isActive ? "Active" : "Inactive" }}
+                  </span>
+                </td>
+                <!-- Actions (Lead only) -->
+                @if (isLead) {
+                  <td>
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap">
+                      @if (editingId !== member.id) {
+                        <button
+                          class="btn btn-ghost btn-sm"
+                          (click)="startEdit(member)"
+                          >
+                          ✏️ Edit
+                        </button>
+                      }
+                      @if (!member.isLead && member.isActive) {
+                        <button
+                          class="btn btn-ghost btn-sm"
+                          (click)="makeLead(member)"
+                          >
+                          ⭐ Make Lead
+                        </button>
+                      }
+                      @if (member.isActive && !isCurrentUser(member)) {
+                        <button
+                          class="btn btn-danger btn-sm"
+                          (click)="deactivate(member)"
+                          >
+                          Deactivate
+                        </button>
+                      }
+                      @if (!member.isActive) {
+                        <button
+                          class="btn btn-ghost btn-sm"
+                          (click)="reactivate(member)"
+                          >
+                          Reactivate
+                        </button>
+                      }
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
   </div>
-</div>

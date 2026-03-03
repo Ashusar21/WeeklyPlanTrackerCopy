@@ -1,5 +1,5 @@
 import { Component, OnInit, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { PlanningWeekService } from '../../core/services/planning-week.service';
@@ -10,7 +10,7 @@ import { PlanningWeek } from '../../core/models/planning-week.model';
 @Component({
   selector: 'app-hub',
   standalone: true,
-  imports: [CommonModule, ConfirmModalComponent],
+  imports: [ConfirmModalComponent],
   templateUrl: './hub.component.html',
   styleUrls: ['./hub.component.scss'],
 })

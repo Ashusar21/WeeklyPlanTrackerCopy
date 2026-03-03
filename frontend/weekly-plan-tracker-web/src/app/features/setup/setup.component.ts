@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TeamMemberService } from '../../core/services/team-member.service';
@@ -8,7 +8,7 @@ import { ToastService } from '../../core/services/toast.service';
 @Component({
   selector: 'app-setup',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './setup.component.html',
   styleUrls: ['./setup.component.scss'],
 })
